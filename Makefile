@@ -1,4 +1,4 @@
-default: generate_vanity generate_keys
+default: generate_keys generate_vanity test_homomorphic
 
 keccak.o: keccak.cpp
 	g++ -c -Wall -O3 -std=c++11 keccak.cpp -o keccak.o
@@ -13,8 +13,15 @@ generate_keys: generate_keys.o encryption.o
 generate_vanity.o: vanity.cpp
 	g++ -c -Wall -O3 -std=c++11  vanity.cpp -lgmp -o generate_vanity.o
 
-generate_vanity: generate_vanity.o encryption.o
+generate_keys: generate_vanity.o encryption.o
 	g++ generate_vanity.o -lgmp -o generate_vanity
+
+test_homomorphic.o: test_homomorphic.cpp
+	g++ -c -Wall -O3 -std=c++11 test_homomorphic.cpp -lgmp -o test_homomorphic.o
+
+
+test_homomorphic: test_homomorphic.o encryption.o
+	g++ test_homomorphic.o -lgmp -o test_homomorphic
 
 
 clean:
