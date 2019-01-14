@@ -8,11 +8,14 @@ int test_pattern(char * address, string pattern){
 }
 // we only generate noise on first 64 keys to save time
 void generate_vanity(mpz_t public_key[TAU],string pattern){
-    mpz_t bruit[64];
+    mpz_t original_public_key[64];
+    mpz_t bruit;
+    mpz_init(bruit);
     for(int i=0;i<64;i++){
-        mpz_init(bruit[i]);
-        mpz_urandomb(bruit[i],state,RHO);
-        mpz_add(public_key[i],public_key[i],bruit[i]);
+        mpz_init(original_public_key[i]);
+        mpz_set(original_public_key[i],public_key[i]);
+        mpz_urandomb(bruit,state,RHO);
+        mpz_add(public_key[i],original_public_key[i],bruit);
 
     }
 
@@ -24,9 +27,8 @@ void generate_vanity(mpz_t public_key[TAU],string pattern){
     }
     while (!test_pattern(address,pattern)){
         for(int i=0;i<64;i++){
-            mpz_sub(public_key[i],public_key[i],bruit[i]);
-            mpz_urandomb(bruit[i],state,RHO);
-            mpz_add(public_key[i],public_key[i],bruit[i]);
+            mpz_urandomb(bruit,state,RHO);
+            mpz_add(public_key[i],original_public_key[i],bruit);
 
         }
         address= generate_address(public_key);
@@ -49,7 +51,7 @@ void generate_vanity(mpz_t public_key[TAU],string pattern){
     fclose(fp);
 
 }
-int main() {
+int main(int argc, char *argv[]) {
     init();
     mpz_t  a,b;
     mpz_inits(a,b,NULL);
@@ -59,9 +61,19 @@ int main() {
         mpz_init(pk[i]);
     }
     load_public_key(pk,(char *)"public_key.txt");
-    //char* address = generate_address(pk);
-    //printf("\n address : %s\n",address);
-    generate_vanity(pk, "po");
+    
+    if (argc<2){
+
+        generate_vanity(pk, string("po"));
+
+    }
+    else{
+
+        generate_vanity(pk, string(argv[1]));
+
+    }
+
+
     return 0;
 }
 
