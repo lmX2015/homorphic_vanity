@@ -28,12 +28,4 @@ clean:
 	rm *.o
 
 
-debug: encryption_debug
-	gdb encryption_debug
-
-encryption_debug: encryption_debug.o
-	g++ encryption_debug.o -lgmp -o encryption_debug
-
-encryption_debug.o: encryption.cpp
-	g++ -c -g -Wall -O3 -std=c++11  encryption.cpp -lgmp -o encryption_debug.o
 
