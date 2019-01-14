@@ -22,4 +22,4 @@ Vanity address and homomorphic encryption for a Coinhouse project
 ``./generate_vanity your_pattern``
 
 You can also test homomorphic properties with
-``./generate_vanity your_pattern`` (should display ``1``)
+``./test_homomorphic`` (should display ``1``)
