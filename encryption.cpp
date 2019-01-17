@@ -33,6 +33,7 @@ void generate_private_key(mpz_t private_key){
     mpz_out_str (fp,16,private_key);
     fprintf(fp,"\n");
     fclose(fp);
+    mpz_clear(acc);
 }
 void load_key(mpz_t key,char* filename){
     FILE * fp=fopen (filename,"r");
@@ -55,7 +56,8 @@ void encrypt_bit(mpz_t msg,int bit,mpz_t private_key){
     mpz_mul(mask,mask,private_key);
     mpz_add(msg,mask,private_key);
     mpz_add_ui(msg,msg,bit);
-   // gmp_printf ("encrypted message : mpz %Zd\n", msg);
+    mpz_clears(bruit,mask,max_size,NULL);
+    // gmp_printf ("encrypted message : mpz %Zd\n", msg);
 
 }
 int decrypt_bit(mpz_t msg,mpz_t private_key){
@@ -64,7 +66,8 @@ int decrypt_bit(mpz_t msg,mpz_t private_key){
 
     mpz_mod(output,msg,private_key);
     mpz_mod_ui(output,output,2);
-    return mpz_sgn(output);
+    int res=mpz_sgn(output);
+    mpz_clear(output);
 
 }
 void generate_public_key(mpz_t public_key[TAU],mpz_t private_key){
@@ -115,8 +118,10 @@ char * generate_address(mpz_t public_key[TAU]){
     char* hash = (char *)malloc(128/8);
     shake128File("address.txt",hash,128);
     free(hash);
-    mpz_import (temp, 128/8, 1, sizeof(char), 0, 0, hash);
-    return mpz_get_str(NULL,62,temp);
 
+    mpz_import (temp, 128/8, 1, sizeof(char), 0, 0, hash);
+    char * res = mpz_get_str(NULL,62,temp);
+    mpz_clears(temp,max_size,NULL);
+    return res;
 
 }
