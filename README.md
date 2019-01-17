@@ -21,3 +21,5 @@ Vanity address and homomorphic encryption for a Coinhouse project
 (will use the default pattern "po") or
 ``./generate_vanity your_pattern``
 
+You can also test homomorphic properties with
+``./test_homomorphic`` (should display ``1``)
