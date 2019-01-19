@@ -226,8 +226,8 @@ int shake128(const char* Psource,char * dest,int filelen,int d){
     if (dest != NULL){
         memcpy(dest,Z,d/8);
     }
-    free(Z);
-    free(s);
+    //free(Z);
+    //free(s);
     //printf("\n");
     return 0;
 }
@@ -251,7 +251,7 @@ int shake128File(char* fileName,char* dest,int d) {
     char *P = (char *)calloc((filelen + (padLen(r, filelen) + 6) / 8), sizeof(char));
 
     memcpy(P, buffer, filelen);
-    free(buffer);
+    //free(buffer);
     return shake128(P,dest,filelen,d);
 
 }

@@ -68,6 +68,7 @@ int decrypt_bit(mpz_t msg,mpz_t private_key){
     mpz_mod_ui(output,output,2);
     int res=mpz_sgn(output);
     mpz_clear(output);
+    return res;
 
 }
 void generate_public_key(mpz_t public_key[TAU],mpz_t private_key){
@@ -116,11 +117,13 @@ char * generate_address(mpz_t public_key[TAU]){
     mpz_out_str (fp,62,temp);
     fclose(fp);
     char* hash = (char *)malloc(128/8);
-    shake128File("address.txt",hash,128);
-    free(hash);
+    shake128File((char*)"address.txt",hash,128);
+
 
     mpz_import (temp, 128/8, 1, sizeof(char), 0, 0, hash);
+    free(hash);
     char * res = mpz_get_str(NULL,62,temp);
+
     mpz_clears(temp,max_size,NULL);
     return res;
 
