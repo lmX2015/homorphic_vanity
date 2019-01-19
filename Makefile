@@ -13,8 +13,8 @@ generate_keys: generate_keys.o encryption.o
 generate_vanity.o: vanity.cpp
 	g++ -c -Wall -O3 -std=c++11  vanity.cpp -lgmp -o generate_vanity.o
 
-generate_keys: generate_keys.o encryption.o
-	g++ generate_vanity.o -lgmp -o generate_keys
+generate_vanity: generate_vanity.o encryption.o
+	g++ generate_vanity.o -lgmp -o generate_vanity
 
 test_homomorphic.o: test_homomorphic.cpp
 	g++ -c -Wall -O3 -std=c++11 test_homomorphic.cpp -lgmp -o test_homomorphic.o
